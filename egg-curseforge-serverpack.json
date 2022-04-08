@@ -30,7 +30,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n# CurseForge Serverpack Installation Script\r\n# Server Files: \/mnt\/server\r\n# Install curl, python3, pip3 and java OpenJDK\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl wget python3 python3-pip openjdk-11-jdk-headless rsync\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n# Go to server folder\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\rcurl -o C-S-D.tar.gz -L \"https:\/\/github.com\/astrooom\/CurseForge-Serverpack-Downloader\/archive\/master.tar.gz\"\r\ntar -zxvf C-S-D.tar.gz --strip-components=1\r\npip3 install -r requirements.txt\r\npython3 run.py pterodactyl ${MODPACK_ID} ${VERSION_ID} True\r\nrm C-S-D.tar.gz\r\n#rm -r __pycache__\r\n#cd \/mnt\r\n#rsync -a \/mnt\/server\/modpack_folder\/ \/mnt\/server\/\r\n#rm -rf \/mnt\/server\/modpack_folder\/*\r\n#rm -r \/mnt\/server\/modpack_folder\r\nrm \/mnt\/server\/*.py\r\nrm \/mnt\/server\/README.md\r\nrm -r \/mnt\/server\/__pycache__\r\n#rm \/mnt\/server\/requirements.txt\r\ncd \/mnt\/server\r\necho -e \"\\e[1;34mInstall Script Finished! You can now start your server.\\e[0m\"\r\nln -sf libraries\/net\/minecraftforge\/forge\/*\/unix_args.txt unix_args.txt",
+            "script": "#!\/bin\/bash\r\n# CurseForge Serverpack Installation Script\r\n# Server Files: \/mnt\/server\r\n# Install curl, python3, pip3 and java OpenJDK\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl wget python3 python3-pip openjdk-11-jdk-headless rsync\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n# Go to server folder\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\ncurl -o C-S-D.tar.gz -L \"https:\/\/github.com\/astrooom\/CurseForge-Serverpack-Downloader\/archive\/master.tar.gz\"\r\ntar -zxvf C-S-D.tar.gz --strip-components=1\r\npip3 install -r requirements.txt\r\npython3 run.py pterodactyl ${MODPACK_ID} ${VERSION_ID} True\r\nrm C-S-D.tar.gz\r\n#rm -r __pycache__\r\n#cd \/mnt\r\n#rsync -a \/mnt\/server\/modpack_folder\/ \/mnt\/server\/\r\n#rm -rf \/mnt\/server\/modpack_folder\/*\r\n#rm -r \/mnt\/server\/modpack_folder\r\nrm \/mnt\/server\/*.py\r\nrm \/mnt\/server\/README.md\r\nrm -r \/mnt\/server\/__pycache__\r\n#rm \/mnt\/server\/requirements.txt\r\ncd \/mnt\/server\r\necho -e \"\\e[1;34mInstall Script Finished! You can now start your server.\\e[0m\"\r\nln -sf libraries\/net\/minecraftforge\/forge\/*\/unix_args.txt unix_args.txt",
             "container": "debian:buster-slim",
             "entrypoint": "bash"
         }
@@ -51,7 +51,7 @@
             "env_variable": "VERSION_ID",
             "default_value": "latest",
             "user_viewable": true,
-            "user_editable": true,
+            "user_editable": false,
             "rules": "required|string|max:20"
         },
         {
