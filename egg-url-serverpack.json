@@ -4,7 +4,7 @@
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2022-04-18T13:09:39+02:00",
+    "exported_at": "2022-05-14T16:25:58+02:00",
     "name": "url-serverpack",
     "author": "game@365hosts.com",
     "description": "Egg to download a minecraft serverpack from a direct download link (url)",
@@ -30,7 +30,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n# CurseForge Serverpack Installation Script\r\n# Server Files: \/mnt\/server\r\n# Install curl, python3, pip3 and java OpenJDK\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl wget python3 python3-pip openjdk-11-jdk-headless rsync\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n# Go to server folder\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\ncurl -o C-S-D.tar.gz -L \"https:\/\/github.com\/astrooom\/Minecraft-Serverpack-Installer\/archive\/master.tar.gz\"\r\ntar -zxvf C-S-D.tar.gz --strip-components=1\r\npip3 install -r requirements.txt\r\n\r\n# Remove old modpack files if exists\r\nrm -rf \/mnt\/server\/libraries\r\nrm -rf \/mnt\/server\/mods\r\nrm -rf \/mnt\/server\/coremods\r\nrm -rf \/mnt\/server\/.fabric\r\nrm -rf \/mnt\/server\/user_jvm_args.txt\r\n\r\n# modpack-id is technic modpack slug.\r\npython3 run.py -provider direct -modpack-id ${MODPACK_ID} --clean-scripts --pterodactyl\r\nrm C-S-D.tar.gz\r\n#rm -r __pycache__\r\n#cd \/mnt\r\n#rsync -a \/mnt\/server\/modpack_folder\/ \/mnt\/server\/\r\n#rm -rf \/mnt\/server\/modpack_folder\/*\r\n#rm -r \/mnt\/server\/modpack_folder\r\nrm \/mnt\/server\/*.py\r\nrm \/mnt\/server\/README.md\r\nrm -r \/mnt\/server\/__pycache__\r\nrm \/mnt\/server\/ModpackDownloader-cli-*.jar\r\n#rm \/mnt\/server\/requirements.txt\r\ncd \/mnt\/server\r\nln -sf libraries\/net\/minecraftforge\/forge\/*\/unix_args.txt unix_args.txt",
+            "script": "#!\/bin\/bash\r\n# URL Serverpack Installation Script\r\n# Server Files: \/mnt\/server\r\n# Install curl, python3, pip3 and java OpenJDK and configure Java\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl wget python3 python3-pip openjdk-11-jdk-headless rsync\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n# Go to server folder\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\ncurl -o C-S-D.tar.gz -L \"https:\/\/github.com\/astrooom\/Minecraft-Serverpack-Installer\/archive\/master.tar.gz\"\r\ntar -zxvf C-S-D.tar.gz --strip-components=1\r\npip3 install -r requirements.txt\r\n# Remove old modpack files if exists\r\nrm -rf \/mnt\/server\/libraries\r\nrm -rf \/mnt\/server\/mods\r\nrm -rf \/mnt\/server\/coremods\r\nrm -rf \/mnt\/server\/.fabric\r\nrm -rf \/mnt\/server\/user_jvm_args.txt\r\n# Run modpack installer script\r\npython3 run.py -provider direct -modpack-id ${MODPACK_ID} --modpack-version ${VERSION_ID} --clean-scripts --pterodactyl\r\nrm C-S-D.tar.gz\r\n# Move files from scripts modpack_folder to main dir for ptero to see it\r\nrsync -a \/mnt\/server\/modpack_folder\/ \/mnt\/server\/\r\nrm -rf \/mnt\/server\/modpack_folder\r\n# Deletes files left from script\r\nrm \/mnt\/server\/*.py",
             "container": "debian:buster-slim",
             "entrypoint": "bash"
         }
