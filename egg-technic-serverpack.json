@@ -1,10 +1,10 @@
 {
     "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
     "meta": {
-        "version": "PTDL_v2",
+        "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2022-08-06T19:07:40+02:00",
+    "exported_at": "2022-05-14T16:22:27+02:00",
     "name": "technic-serverpack",
     "author": "olle.ljung@gmail.com",
     "description": "Egg for Technic serverpacks",
@@ -13,15 +13,15 @@
         "java_version",
         "pid_limit"
     ],
-    "docker_images": {
-        "ghcr.io\/pterodactyl\/yolks:java_17": "ghcr.io\/pterodactyl\/yolks:java_17",
-        "ghcr.io\/pterodactyl\/yolks:java_16": "ghcr.io\/pterodactyl\/yolks:java_16",
-        "ghcr.io\/pterodactyl\/yolks:java_11": "ghcr.io\/pterodactyl\/yolks:java_11",
-        "ghcr.io\/pterodactyl\/yolks:java_8": "ghcr.io\/pterodactyl\/yolks:java_8",
-        "ghcr.io\/pterodactyl\/yolks:java_14": "ghcr.io\/pterodactyl\/yolks:java_14"
-    },
+    "images": [
+        "ghcr.io\/pterodactyl\/yolks:java_17",
+        "ghcr.io\/pterodactyl\/yolks:java_16",
+        "ghcr.io\/pterodactyl\/yolks:java_11",
+        "ghcr.io\/pterodactyl\/yolks:java_8",
+        "ghcr.io\/pterodactyl\/yolks:java_14"
+    ],
     "file_denylist": [],
-    "startup": "java -Xms128M -Xmx$(({{SERVER_MEMORY}}-512))M -Dterminal.jline=false -Dterminal.ansi=true -jar {{SERVER_JARFILE}}",
+    "startup": "java -Xms128M -Xmx$(({{SERVER_MEMORY}}-512))M {{STARTUP_FLAGS}} -Dterminal.jline=false -Dterminal.ansi=true -jar {{SERVER_JARFILE}}",
     "config": {
         "files": "{\r\n    \"server.properties\": {\r\n        \"parser\": \"properties\",\r\n        \"find\": {\r\n            \"server-ip\": \"0.0.0.0\",\r\n            \"enable-query\": \"true\",\r\n            \"server-port\": \"{{server.build.default.port}}\",\r\n            \"sync-chunk-writes\": \"false\",\r\n            \"view-distance\": \"6\"\r\n        }\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \")! For help, type \"\r\n}",
@@ -30,7 +30,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n# Technic Serverpack Installation Script\r\n# Server Files: \/mnt\/server\r\n# Install curl, python3, pip3 and java OpenJDK and configure Java\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl wget python3 python3-pip openjdk-11-jdk-headless rsync\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n# Go to server folder\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\ncurl -o C-S-D.tar.gz -L \"https:\/\/github.com\/astrooom\/Minecraft-Serverpack-Installer\/archive\/master.tar.gz\"\r\ntar -zxvf C-S-D.tar.gz --strip-components=1\r\npip3 install -r requirements.txt\r\n# Remove old modpack files if exists\r\nrm -rf \/mnt\/server\/libraries\r\nrm -rf \/mnt\/server\/mods\r\nrm -rf \/mnt\/server\/coremods\r\nrm -rf \/mnt\/server\/.fabric\r\nrm -rf \/mnt\/server\/user_jvm_args.txt\r\nrm \/mnt\/server\/server.jar\r\n# Run modpack installer script\r\npython3 run.py -provider technic -modpack-id ${MODPACK_ID} --modpack-version ${VERSION_ID} --clean-scripts --pterodactyl\r\nrm C-S-D.tar.gz\r\n# Move files from scripts modpack_folder to main dir for ptero to see it\r\nrsync -a \/mnt\/server\/modpack_folder\/ \/mnt\/server\/\r\nrm -rf \/mnt\/server\/modpack_folder\r\n# Deletes files left from script\r\nrm \/mnt\/server\/*.py",
+            "script": "#!\/bin\/bash\r\n# Technic Serverpack Installation Script\r\n# Server Files: \/mnt\/server\r\n# Install curl, python3, pip3 and java OpenJDK and configure Java\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl python3 python3-pip openjdk-11-jdk-headless rsync\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n\r\n# Go to server folder\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\ncurl -o C-S-D.tar.gz -L \"https:\/\/github.com\/astrooom\/Minecraft-Serverpack-Installer\/archive\/master.tar.gz\"\r\ntar -zxvf C-S-D.tar.gz --strip-components=1\r\npip3 install -r requirements.txt\r\n\r\n# Remove old modpack files if exists\r\nrm -rf \/mnt\/server\/libraries\r\nrm -rf \/mnt\/server\/mods\r\nrm -rf \/mnt\/server\/coremods\r\nrm -rf \/mnt\/server\/.fabric\r\nrm -rf \/mnt\/server\/user_jvm_args.txt\r\nrm \/mnt\/server\/server.jar\r\n\r\n# Run modpack installer script\r\npython3 run.py -provider technic -modpack-id ${MODPACK_ID} --modpack-version ${VERSION_ID} --clean-scripts --pterodactyl\r\nrm C-S-D.tar.gz\r\n\r\n# Move files from scripts modpack_folder to main dir for ptero to see it\r\nrsync -a \/mnt\/server\/modpack_folder\/ \/mnt\/server\/\r\nrm -rf \/mnt\/server\/modpack_folder\r\n\r\n# Deletes files left from script\r\nrm \/mnt\/server\/*.py\r\nrm \/mnt\/server\/README.md\r\nrm \/mnt\/server\/requirements.txt\r\nrm \/mnt\/server\/.gitignore\r\nrm -r \/mnt\/server\/__pycache__\r\nrm \/mnt\/server\/ModpackDownloader-cli-*.jar\r\n\r\n# Create symlink to allow for new forge startup\r\ncd \/mnt\/server\r\nln -sf libraries\/net\/minecraftforge\/forge\/*\/unix_args.txt unix_args.txt",
             "container": "debian:buster-slim",
             "entrypoint": "bash"
         }
@@ -43,18 +43,16 @@
             "default_value": "attack-of-the-bteam",
             "user_viewable": true,
             "user_editable": false,
-            "rules": "required|string|max:20",
-            "field_type": "text"
+            "rules": "required|string|max:20"
         },
         {
             "name": "Modpack Version",
             "description": "Version of the modpack to use. Available versions can be found on the modpacks's page on Technic. Set to \"latest\" to pull the latest version.",
             "env_variable": "VERSION_ID",
-            "default_value": "latest",
+            "default_value": "mPQfuheP",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string|max:20",
-            "field_type": "text"
+            "rules": "required|string|max:20"
         },
         {
             "name": "Server Jarfile",
@@ -63,8 +61,7 @@
             "default_value": "server.jar",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string|max:50",
-            "field_type": "text"
+            "rules": "required|string|max:50"
         },
         {
             "name": "JVM Startup Flags",
@@ -73,8 +70,7 @@
             "default_value": "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https:\/\/mcflags.emc.gs -Daikars.new.flags=true -Dlog4j2.formatMsgNoLookups=true",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "nullable|string|max:2000",
-            "field_type": "text"
+            "rules": "nullable|string|max:2000"
         }
     ]
 }
